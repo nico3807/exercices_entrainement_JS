@@ -1,0 +1,189 @@
+/* style.css */
+
+/* Conteneur principal */
+.container {
+  display: flex;
+  gap: 20px;
+  width: 95%;
+  margin: 20px auto;
+}
+
+.top-row {
+  margin-bottom: 0;
+}
+
+/* Conteneur de la console */
+.console-row {
+  display: block;
+  width: 95%;
+  margin: 0 -10 20px auto;
+}
+
+#consoleWrapper {
+  width: 100%;
+  background-color: #dedede;
+  border: 1px solid #6272a4;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #282a36;
+  color: #f8f8f2;
+  font-family: sans-serif;
+}
+
+.code-area,
+.output-area {
+  flex: 1;
+  border: 1px solid #6272a4;
+  padding: 3px;
+  background-color: #44475a;
+}
+.output-area {
+  background-color: #dedede;
+}
+.code-area h3 {
+  color: #50fa7b;
+  margin-top: 0; /* Supprime la marge du haut */
+  margin-bottom: 10px;
+}
+.output-area h3 {
+  color: #0a6120;
+  margin-top: 0; /* Supprime la marge du haut */
+  margin-bottom: 10px;
+}
+
+/* Groupe de boutons */
+.buttons-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.CodeMirror {
+  height: 400px;
+  background-color: #282a36 !important;
+  border: 1px solid #6272a4;
+  font-size: 16px;
+}
+
+iframe {
+  width: 100%;
+  height: 250px;
+  border: none;
+}
+
+/* --- BOUTONS --- */
+
+#runButton {
+  background-color: #50fa7b;
+  color: #282a36;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+#runButton:hover {
+  background-color: #049328;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+#assistantButton,
+#closeModalButton {
+  background-color: #bd93f9;
+  color: #282a36;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+#assistantButton:hover,
+#closeModalButton:hover {
+  background-color: #ff79c6;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+#newExerciseButton {
+  background-color: #4d61d5;
+  color: #282a36;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+#newExerciseButton:hover {
+  background-color: #3020c4;
+  transform: translateY(-2px);
+}
+
+/* --- MODALE (POP-UP) --- */
+.modal {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fond noir semi-transparent */
+}
+
+.modal-content {
+  background-color: #282a36; /* Fond sombre thème Dracula */
+  color: #f8f8f2;
+  margin: 10% auto; /* 10% du haut et centré */
+  padding: 20px;
+  border: 2px solid #bd93f9; /* Bordure mauve */
+  width: 400px; /* Largeur fixe demandée */
+  height: 400px; /* Hauteur fixe demandée */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #bd93f9;
+  border-bottom: 1px solid #44475a;
+  padding-bottom: 10px;
+}
+
+#assistantContent {
+  flex: 1; /* Prend tout l'espace disponible */
+  overflow-y: auto; /* Barre de défilement si le texte est trop long */
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  margin-top: 15px;
+  text-align: right;
+}
+
+/* Styles Markdown */
+#exerciseContainer .markdown-content,
+#assistantContent {
+  color: #f8f8f2;
+}
+#exerciseContainer .markdown-content h4 {
+  color: #ff79c6;
+  font-size: 1.1em;
+}
+#exerciseContainer .markdown-content strong {
+  color: #50fa7b;
+}
+#exerciseContainer .markdown-content ul {
+  padding-left: 20px;
+}
