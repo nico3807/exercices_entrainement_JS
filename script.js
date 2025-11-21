@@ -107,7 +107,7 @@ async function generateExercise() {
     );
   } catch (error) {
     console.error(error);
-    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération.</p>`;
+    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération. Réessayez de générer la question...</p>`;
   } finally {
     if (newExerciseButton) newExerciseButton.disabled = false;
   }
