@@ -99,6 +99,8 @@ async function generateExercise() {
     donne directement l'énoncé de l'exercice sans introduction ni conclusion.
     L'exercice portera sur un petit script que l'étudiant pourra tester directement dans un éditeur codemirror. 
     L'énoncé ne dépassera 200 mots. 
+    Tu placeras l'énoncé dans un pargraphe nommé obligatoirement "🎯 Consignes".
+    Après l'énoncé, tu feras un paragraphe nommé obligatoirement "Code à Compléter". Tu rajouteras après ce paragraphe un code javascript incomplet que l'étudiant devra compléter pour résoudre l'exercice.
     Formatte la réponse en Markdown.`;
   const userQuery =
     "Génère un nouvel exercice JavaScript pour un étudiant débutant.";
