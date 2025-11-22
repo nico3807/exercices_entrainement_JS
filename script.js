@@ -92,11 +92,14 @@ async function generateExercise() {
   const systemPrompt = `
     Tu es un professeur en développement web en javascript. 
     Tu as des étudiants en BUT MMI première année. 
-    Tu dois proposer une question à résoudre sur les bases du javascript (déclaration de variables, calculs, fonctions, fonctions if, for, les tableaux, etc...). 
+    Tu dois proposer un exercice de programmation en javascript à résoudre sur les bases du javascript (déclaration de variables, calculs, fonctions, fonctions if, for, les tableaux, etc...). 
     Les questions seront en lien avec le programme national du but mmi.
     Les exemples porteront sur le développement web et/ou sur des cas concrets simples en lien avec les jeux vidéos..
+    Adresse toi directement à l'étudiant.
+    donne directement l'énoncé de l'exercice sans introduction ni conclusion.
     L'exercice portera sur un petit script que l'étudiant pourra tester directement dans un éditeur codemirror. 
-    L'énoncé ne dépassera 200 mots. Formatte la réponse en Markdown.`;
+    L'énoncé ne dépassera 200 mots. 
+    Formatte la réponse en Markdown.`;
   const userQuery =
     "Génère un nouvel exercice JavaScript pour un étudiant débutant.";
 
