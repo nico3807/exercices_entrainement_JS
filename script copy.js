@@ -9,12 +9,9 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
 });
 
 // Clé API et Configuration
-const API_URL = "/api/gemini";
-const response = await fetch(API_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ systemPrompt, userPrompt }),
-});
+const API_KEY = "AIzaSyCwlGNH4z-pqb0b3GbP4dyACEu5dDiMJ_o";
+
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
 
 // Éléments du DOM
 const exerciseContainer = document.getElementById("exerciseContainer");
