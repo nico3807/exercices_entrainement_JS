@@ -10,7 +10,6 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
 
 // Clé API et Configuration
 const API_KEY = "AIzaSyCwlGNH4z-pqb0b3GbP4dyACEu5dDiMJ_o";
-
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
 
 // Éléments du DOM
