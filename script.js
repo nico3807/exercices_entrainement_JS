@@ -87,7 +87,7 @@ function runCode() {
 async function generateExercise() {
   if (newExerciseButton) newExerciseButton.disabled = true;
   exerciseContainer.innerHTML =
-    "<h3>Énoncé de l'exercice :</h3><p style=\"color: #8be9fd;\">Chargement de l'exercice... 🤖</p>";
+    "<h3>Énoncé de l'exercice :</h3><p style=\"color: #e15c37ff;\">Chargement de l'exercice... 🤖</p>";
 
   const systemPrompt = `
     Tu es un professeur en développement web en javascript. 
