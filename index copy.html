@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Éditeur JS Intégré</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/dracula.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- LIGNE 1 : ÉDITEUR (50%) | ÉNONCÉ (50%) -->
+    <div class="container top-row">
+      <!-- COLONNE GAUCHE : CODE ET BOUTONS -->
+      <div class="code-area">
+        <h3>Code JavaScript :</h3>
+        <textarea id="editor">// Ajoutez votre code JS ici</textarea>
+        <div class="buttons-row">
+          <button id="runButton">Tester le code</button>
+          <!-- Bouton Assistant -->
+          <button id="assistantButton">Assistant</button>
+          <!-- Bouton Nouvel Exercice -->
+          <button id="newExerciseButton">nouvel Exercice</button>
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE : ÉNONCÉ DE L'EXERCICE -->
+      <div id="exerciseContainer" class="code-area">
+        <h3>Énoncé de l'exercice :</h3>
+        <p>Cliquez sur "nouvel Exercice" pour générer une question.</p>
+      </div>
+    </div>
+    <br />
+    <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->
+    <div class="container console-row">
+      <div id="consoleWrapper" class="output-area">
+        <h3>Résultat (Console) :</h3>
+        <iframe id="outputFrame"></iframe>
+      </div>
+    </div>
+
+    <!-- ⭐️ NOUVEAU : Structure de la Pop-up (Modale) -->
+    <div id="assistantModal" class="modal">
+      <div class="modal-content">
+        <h3>Assistant Pédagogique 🎓</h3>
+        <div id="assistantContent">
+          <!-- La réponse de Gemini s'affichera ici -->
+          <p>
+            Je suis là pour t'aider. Clique sur le bouton pour analyser ton
+            code...
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="closeModalButton">Fermer</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p style="text-align: center; font-size: 0.9em; color: #666">
+        © 2025 — BUT MMI Béziers - MAURIN N.<br />
+        R1.12 Développement Web
+      </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/javascript/javascript.min.js"></script>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

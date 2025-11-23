@@ -5,7 +5,7 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
   lineNumbers: true,
   mode: "javascript",
   theme: "dracula",
-  lineWrapping: true, // ⭐️ C'est cette option qui force le retour à la ligne !
+  lineWrapping: true,
 });
 
 // Clé API et Configuration
@@ -20,7 +20,7 @@ const assistantContent = document.getElementById("assistantContent");
 const closeModalButton = document.getElementById("closeModalButton");
 const assistantButton = document.getElementById("assistantButton");
 
-// Variable pour stocker l'exercice
+// Variable pour stocker l'exercice (texte complet pour l'assistant)
 let currentExerciseText = "Aucun exercice généré pour le moment.";
 
 // --- 2. EXÉCUTION DU CODE (RunCode) ---
@@ -28,9 +28,7 @@ let currentExerciseText = "Aucun exercice généré pour le moment.";
 function runCode() {
   const rawCode = codeMirrorInstance.getValue();
 
-  // 🛡️ SÉCURITÉ CRITIQUE :
-  // Il faut échapper les backticks (`) ET les interpolations (${)
-  // Sinon le code de l'étudiant casse le script d'injection.
+  // 🛡️ SÉCURITÉ : Échappement des caractères spéciaux
   let code = rawCode.replace(/`/g, "\\`");
   code = code.replace(/\${/g, "\\${");
 
@@ -38,7 +36,6 @@ function runCode() {
   const iframeDoc =
     outputFrame.contentDocument || outputFrame.contentWindow.document;
 
-  // Nettoyage et préparation de l'iframe
   iframeDoc.open();
   iframeDoc.write(`
     <!DOCTYPE html>
@@ -54,7 +51,6 @@ function runCode() {
   `);
   iframeDoc.close();
 
-  // Injection du script après un court délai
   setTimeout(() => {
     const scriptElement = iframeDoc.createElement("script");
     const scriptContent = `
@@ -92,16 +88,18 @@ async function generateExercise() {
   const systemPrompt = `
     Tu es un professeur en développement web en javascript. 
     Tu as des étudiants en BUT MMI première année. 
-    Tu dois proposer un exercice de programmation en javascript à résoudre sur les bases du javascript (déclaration de variables, calculs, fonctions, fonctions if, for, les tableaux, etc...). 
+    Tu dois proposer un exercice de programmation en javascript à résoudre sur les bases du javascript.
     Les questions seront en lien avec le programme national du but mmi.
-    Les exemples porteront sur le développement web et/ou sur des cas concrets simples en lien avec les jeux vidéos..
+    Les exemples porteront sur le développement web et/ou sur des cas concrets simples en lien avec les jeux vidéos.
     Adresse toi directement à l'étudiant.
-    donne directement l'énoncé de l'exercice sans introduction ni conclusion.
+    Donne directement l'énoncé de l'exercice sans introduction ni conclusion.
     L'exercice portera sur un petit script que l'étudiant pourra tester directement dans un éditeur codemirror. 
     L'énoncé ne dépassera 200 mots. 
-    Tu placeras l'énoncé dans un pargraphe nommé obligatoirement "🎯 Consignes".
-    Après l'énoncé, tu feras un paragraphe nommé obligatoirement "Code à Compléter". Tu rajouteras après ce paragraphe un code javascript incomplet que l'étudiant devra compléter pour résoudre l'exercice.
+    Tu placeras l'énoncé dans un paragraphe nommé obligatoirement "🎯 Consignes".
+    Après l'énoncé, tu feras un paragraphe nommé obligatoirement "Code à Compléter". 
+    Tu rajouteras après ce paragraphe un code javascript incomplet que l'étudiant devra compléter.
     Formatte la réponse en Markdown.`;
+
   const userQuery =
     "Génère un nouvel exercice JavaScript pour un étudiant débutant.";
 
@@ -109,16 +107,48 @@ async function generateExercise() {
     const result = await callGemini(systemPrompt, userQuery);
     const text = result || "Erreur de génération.";
 
+    // Sauvegarde du texte complet pour l'assistant (il a besoin du contexte complet)
     currentExerciseText = text;
 
-    const htmlContent = formatMarkdown(text);
+    // --- ⭐️ LOGIQUE DE SÉPARATION (Consignes VS Code) ---
+
+    // On cherche le marqueur "Code à Compléter" (avec ou sans balises markdown autour)
+    // Le regex cherche "Code à Compléter" en étant flexible sur la casse et les symboles (#, *)
+    const separatorRegex =
+      /#{1,6}\s*Code à Compléter|\*\*Code à Compléter\*\*|Code à Compléter/i;
+    const splitMatch = text.match(separatorRegex);
+
+    let instructionsPart = text;
+    let codePart = "// Écris ton code ici pour résoudre l'exercice !";
+
+    if (splitMatch) {
+      const splitIndex = splitMatch.index;
+
+      // 1. Partie Instructions : Tout ce qui est AVANT le séparateur
+      instructionsPart = text.substring(0, splitIndex).trim();
+
+      // 2. Partie Code : Tout ce qui est APRÈS le séparateur (+ la longueur du séparateur)
+      let rawCodePart = text
+        .substring(splitIndex + splitMatch[0].length)
+        .trim();
+
+      // Nettoyage du code : On enlève les balises Markdown (```javascript ... ```)
+      // On enlève ```javascript ou ```js au début, et ``` à la fin
+      codePart = rawCodePart
+        .replace(/^```(javascript|js)?/i, "")
+        .replace(/```$/, "")
+        .trim();
+    }
+
+    // Mise à jour de l'affichage de l'énoncé (sans le code)
+    const htmlContent = formatMarkdown(instructionsPart);
     exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><div class="markdown-content">${htmlContent}</div>`;
-    codeMirrorInstance.setValue(
-      "// Écris ton code ici pour résoudre l'exercice !"
-    );
+
+    // Mise à jour de l'éditeur avec le code extrait
+    codeMirrorInstance.setValue(codePart);
   } catch (error) {
     console.error(error);
-    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération. Réessayez de générer la question...</p>`;
+    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération. Réessayez...</p>`;
   } finally {
     if (newExerciseButton) newExerciseButton.disabled = false;
   }
@@ -132,6 +162,7 @@ async function askAssistant() {
     '<p style="color: #bd93f9; text-align: center; margin-top: 50px;">Analyse de ton code en cours... 🧐</p>';
 
   const studentCode = codeMirrorInstance.getValue();
+  // Pour l'assistant, on garde le texte complet (currentExerciseText) s'il existe
   const exerciseText =
     currentExerciseText.length > 20
       ? currentExerciseText
@@ -139,19 +170,14 @@ async function askAssistant() {
 
   const systemPrompt = `
 Tu es un expert en développement javascript.
-Tu dois aider un étudiant de première année en BUT MMI à résoudre un exercice de programmation en javascript.
-Tu ne dois jamais donner la correction de l'exercice (même partiellement) à l'étudiant, juste lui donner des indications lui permettant de résoudre lui-même l'exercice.
-Tu dois t'adresser directement à l'étudiant.
-Il ne peut pas te poser des questions, il peut juste te proposer son code.
-Tu ne dois pas proposer à l'étudiant de te poser des questions.
-Il est inutile de proposer à l'étudiant de tester son code avec les exemples proposés.
-Tu ne dois pas lui proposer des modifications du programme qui sortent du cadre de l'exercice.
-Si son code est correct (tu dois alors lui dire que son code est correct et éventuellement lui donner des conseils pour encore en améliorer la qualité). Si son code est erroné ou ne fonctionne pas, tu dois aider l'étudiant à trouver ses erreurs.
+Tu dois aider un étudiant de première année en BUT MMI.
+Tu ne dois jamais donner la correction de l'exercice, juste des indices.
 Tu dois t'exprimer en français.
+Si son code est correct, félicite-le. Sinon, aide-le à trouver l'erreur.
 `;
 
   const userQuery = `
-Voici l'exercice proposé à l'étudiant : 
+Voici l'exercice complet proposé à l'étudiant : 
 ${exerciseText}
 
 Voici le programme proposé par l'étudiant : 
@@ -162,7 +188,7 @@ ${studentCode}
     const result = await callGemini(systemPrompt, userQuery);
     assistantContent.innerHTML = formatMarkdown(result);
   } catch (error) {
-    assistantContent.innerHTML = `<p style="color: #ff5555;">Oups, je n'arrive pas à analyser ton code pour le moment. (${error.message})</p>`;
+    assistantContent.innerHTML = `<p style="color: #ff5555;">Erreur d'analyse (${error.message})</p>`;
   }
 }
 
@@ -202,7 +228,6 @@ function formatMarkdown(text) {
 
 // --- 6. ÉVÉNEMENTS ---
 
-// On vérifie que les éléments existent avant d'ajouter les écouteurs
 const runBtn = document.getElementById("runButton");
 if (runBtn) runBtn.addEventListener("click", runCode);
 
@@ -213,7 +238,6 @@ if (assistantButton) assistantButton.addEventListener("click", askAssistant);
 if (closeModalButton)
   closeModalButton.addEventListener("click", closeAssistant);
 
-// Fermer si on clique en dehors de la modale (sur le fond gris)
 window.onclick = function (event) {
   if (event.target == assistantModal) {
     closeAssistant();
