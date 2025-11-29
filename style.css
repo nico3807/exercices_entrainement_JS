@@ -62,6 +62,8 @@ body {
   box-sizing: border-box;
   /* Si le contenu est trop grand, on scroll DANS la zone, pas la page */
   overflow-y: auto;
+  font-size: 1.2em; /* Taille augmentée */
+  line-height: 1.6;
 }
 .output-area {
   background-color: #dedede;
@@ -97,13 +99,7 @@ iframe {
   height: 300px;
   border: none;
 }
-footer {
-  /* Pas besoin de position:fixed, le flexbox s'en occupe */
-  background-color: #f1f1f1;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  flex-shrink: 0; /* Empêche le footer d'être écrasé */
-}
+
 /* --- BOUTONS --- */
 
 #runButton {
@@ -182,8 +178,16 @@ footer {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
-
+.modal-footer {
+  margin-top: 0;
+  padding: 15px;
+  background-color: #282a36; /* Même couleur de fond pour être propre */
+  border-top: 1px solid #44475a; /* Une petite ligne de séparation */
+  flex-shrink: 0; /* ⛔️ INTERDIT de rétrécir ce bloc */
+  z-index: 10; /* On le met au-dessus au cas où */
+}
 .modal-content h3 {
   margin-top: 0;
   color: #bd93f9;
@@ -217,4 +221,25 @@ footer {
 }
 #exerciseContainer .markdown-content ul {
   padding-left: 20px;
+}
+footer {
+  /* 1. Apparence */
+  background-color: #282a36; /* Fond sombre (pour voir ton texte clair) */
+  border-top: 1px solid #bd93f9; /* Petite bordure violette sympa */
+  padding: 15px;
+
+  /* 2. Positionnement dans la page */
+  flex-shrink: 0; /* Ne s'écrase jamais */
+
+  /* 3. ALIGNEMENT MAGIQUE (Flexbox) */
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+}
+
+footer p {
+  color: #dedede; /* La couleur que tu voulais */
+  font-size: 1.1em; /* Taille augmentée */
+  margin: 0; /* Important pour que le centrage soit parfait */
+  text-align: center;
 }

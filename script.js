@@ -261,6 +261,3 @@ window.onclick = function (event) {
     }
   };
 };
-
-// Lancement initial
-runCode();
