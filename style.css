@@ -24,21 +24,44 @@
   background-color: #dedede;
   border: 1px solid #6272a4;
 }
-
+html,
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
+  /* On transforme le body en colonne flexible */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Supprime la barre de scroll globale du navigateur */
+
   background-color: #282a36;
   color: #f8f8f2;
   font-family: sans-serif;
 }
+.container.top-row {
+  flex: 1; /* C'est la clé : ça pousse le footer tout en bas */
+  display: flex; /* Met l'éditeur et l'énoncé côte à côte */
+  width: 100%;
+  padding: 0; /* On enlève les marges pour coller aux bords */
+  gap: 10px; /* Petit espace entre les colonnes */
+  box-sizing: border-box;
+}
 
 .code-area,
 .output-area {
-  flex: 1;
+  flex: 1; /* ⭐️ IMPORTANT : Force l'élément à prendre 50% de l'espace */
+  width: 0; /* ⭐️ ASTUCE : Empêche l'éditeur de pousser les bords */
+  min-width: 0; /* Sécurité pour flexbox */
   border: 1px solid #6272a4;
   padding: 3px;
   background-color: #44475a;
+  height: 100%; /* Prend toute la hauteur du parent */
+  display: flex;
+  flex-direction: column; /* Empile Titre, Éditeur, Boutons */
+  padding: 10px;
+  box-sizing: border-box;
+  /* Si le contenu est trop grand, on scroll DANS la zone, pas la page */
+  overflow-y: auto;
 }
 .output-area {
   background-color: #dedede;
@@ -62,18 +85,25 @@ body {
 }
 
 .CodeMirror {
-  height: 400px;
-  background-color: #282a36 !important;
+  background-color: #282a36;
   border: 1px solid #6272a4;
   font-size: 16px;
+  flex: 1; /* Prend tout l'espace disponible en hauteur dans sa colonne */
+  height: auto; /* Écrase la hauteur par défaut */
 }
 
 iframe {
   width: 100%;
-  height: 150px;
+  height: 300px;
   border: none;
 }
-
+footer {
+  /* Pas besoin de position:fixed, le flexbox s'en occupe */
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  flex-shrink: 0; /* Empêche le footer d'être écrasé */
+}
 /* --- BOUTONS --- */
 
 #runButton {
@@ -142,11 +172,12 @@ iframe {
 .modal-content {
   background-color: #282a36; /* Fond sombre thème Dracula */
   color: #f8f8f2;
-  margin: 10% auto; /* 10% du haut et centré */
+  margin: 5% auto; /* 10% du haut et centré */
   padding: 20px;
   border: 2px solid #bd93f9; /* Bordure mauve */
-  width: 400px; /* Largeur fixe demandée */
-  height: 400px; /* Hauteur fixe demandée */
+  width: 80%; /* Prend 80% de la largeur de l'écran */
+  max-width: 800px; /* Mais pas plus de 800px */
+  height: 80%; /* Prend 80% de la hauteur de l'écran */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   display: flex;
