@@ -227,6 +227,7 @@ footer {
   background-color: #282a36; /* Fond sombre (pour voir ton texte clair) */
   border-top: 1px solid #bd93f9; /* Petite bordure violette sympa */
   padding: 15px;
+  color: #dedede;
 
   /* 2. Positionnement dans la page */
   flex-shrink: 0; /* Ne s'écrase jamais */
