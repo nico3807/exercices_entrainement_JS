@@ -142,13 +142,13 @@ async function generateExercise() {
 
     // Mise à jour de l'affichage de l'énoncé (sans le code)
     const htmlContent = formatMarkdown(instructionsPart);
-    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><div class="markdown-content">${htmlContent}</div>`;
+    exerciseContainer.innerHTML = `<h3>🎯 Énoncé de l'exercice :</h3><div class="markdown-content">${htmlContent}</div>`;
 
     // Mise à jour de l'éditeur avec le code extrait
     codeMirrorInstance.setValue(codePart);
   } catch (error) {
     console.error(error);
-    exerciseContainer.innerHTML = `<h3>Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération. Réessayez...</p>`;
+    exerciseContainer.innerHTML = `<h3>🎯 Énoncé de l'exercice :</h3><p style="color: red;">Erreur lors de la génération. Réessayez...</p>`;
   } finally {
     if (newExerciseButton) newExerciseButton.disabled = false;
   }
