@@ -19,6 +19,9 @@ const assistantModal = document.getElementById("assistantModal");
 const assistantContent = document.getElementById("assistantContent");
 const closeModalButton = document.getElementById("closeModalButton");
 const assistantButton = document.getElementById("assistantButton");
+// ⭐️ NOUVEAU : Éléments de la modale d'exécution
+const executionModal = document.getElementById("executionModal");
+const closeExecutionButton = document.getElementById("closeExecutionButton");
 
 // Variable pour stocker l'exercice (texte complet pour l'assistant)
 let currentExerciseText = "Aucun exercice généré pour le moment.";
@@ -26,6 +29,8 @@ let currentExerciseText = "Aucun exercice généré pour le moment.";
 // --- 2. EXÉCUTION DU CODE (RunCode) ---
 
 function runCode() {
+  // ⭐️ NOUVEAU : On ouvre la pop-up dès qu'on lance le test
+  if (executionModal) executionModal.style.display = "block";
   const rawCode = codeMirrorInstance.getValue();
 
   // 🛡️ SÉCURITÉ : Échappement des caractères spéciaux
@@ -239,9 +244,22 @@ if (closeModalButton)
   closeModalButton.addEventListener("click", closeAssistant);
 
 window.onclick = function (event) {
-  if (event.target == assistantModal) {
-    closeAssistant();
+  // Gestion de la fermeture de la modale de résultat
+  if (closeExecutionButton) {
+    closeExecutionButton.addEventListener("click", () => {
+      executionModal.style.display = "none";
+    });
   }
+
+  // Gestion des clics en dehors des fenêtres (pour fermer les deux modales)
+  window.onclick = function (event) {
+    if (event.target == assistantModal) {
+      closeAssistant();
+    }
+    if (event.target == executionModal) {
+      executionModal.style.display = "none";
+    }
+  };
 };
 
 // Lancement initial

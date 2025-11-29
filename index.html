@@ -47,12 +47,6 @@
     </div>
     <br />
     <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->
-    <div class="container console-row">
-      <div id="consoleWrapper" class="output-area">
-        <h3>Résultat (Console) :</h3>
-        <iframe id="outputFrame"></iframe>
-      </div>
-    </div>
 
     <!-- ⭐️ NOUVEAU : Structure de la Pop-up (Modale) -->
     <div id="assistantModal" class="modal">
@@ -67,6 +61,25 @@
         </div>
         <div class="modal-footer">
           <button id="closeModalButton">Fermer</button>
+        </div>
+      </div>
+    </div>
+    <div id="executionModal" class="modal">
+      <div class="modal-content">
+        <h3>Résultat de l'exécution 🚀</h3>
+
+        <div
+          id="executionContent"
+          style="height: 500px; background: #dedede; border-radius: 4px"
+        >
+          <iframe
+            id="outputFrame"
+            style="width: 100%; height: 100%; border: none"
+          ></iframe>
+        </div>
+
+        <div class="modal-footer">
+          <button id="closeExecutionButton">Fermer</button>
         </div>
       </div>
     </div>
