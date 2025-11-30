@@ -21,27 +21,28 @@
         <h3>Éditeur de code JavaScript :</h3>
         <textarea id="editor">// Ajoutez votre code JS ici</textarea>
         <div class="buttons-row">
-          <button id="runButton">Tester le code</button>
-          <button
-            id="assistantButton"
-            title="Demander de l'aide à l'assistant IA"
-          >
-            <img
-              src="./icone_assistant.jpg"
-              widht="50"
-              height="50"
-              alt="Assistant IA"
-            />
-          </button>
-          <button id="newExerciseButton">Nouvel Exercice</button>
-        </div>
+  <button id="runButton">▶ Tester le code</button>
+</div>
       </div>
 
       <!-- COLONNE DROITE : ÉNONCÉ DE L'EXERCICE -->
-      <div id="exerciseContainer" class="code-area">
-        <h3>Énoncé de l'exercice :</h3>
-        <p>Cliquez sur "nouvel Exercice" pour générer une question.</p>
+      <div class="code-area">
+  
+  <div class="exercises-top-bar">
+      <h3>Énoncé de l'exercice :</h3>
+      <div class="header-buttons">
+          <button id="newExerciseButton">Nouvel Exercice</button>
+          <button id="assistantButton" title="Demander de l'aide à l'assistant IA">
+              <img src="./icone_assistant.jpg" width="30" height="30" style="vertical-align: middle; border-radius: 50%;" alt="IA">
+          </button>
       </div>
+  </div>
+
+  <div id="exerciseContainer">
+    <p>Cliquez sur "Nouvel Exercice" pour commencer.</p>
+  </div>
+
+</div>
     </div>
     <br />
     <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->

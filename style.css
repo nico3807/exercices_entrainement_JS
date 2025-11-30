@@ -1,246 +1,246 @@
-/* style.css */
-
-/* Conteneur principal */
-.container {
-  display: flex;
-  gap: 20px;
-  width: 95%;
-  margin: 20px auto;
-}
-
-.top-row {
-  margin-bottom: 0;
-}
-
-/* Conteneur de la console */
-.console-row {
-  display: block;
-  width: 95%;
-  margin: 0 -10 20px auto;
-}
-
-#consoleWrapper {
-  width: 100%;
-  background-color: #dedede;
-  border: 1px solid #6272a4;
-}
+/* --- CONFIGURATION GÉNÉRALE --- */
 html,
 body {
-  height: 100%;
+  height: 100%; /* Force la hauteur totale */
   margin: 0;
   padding: 0;
-  /* On transforme le body en colonne flexible */
+  display: flex;
+  flex-direction: column; /* Organisation verticale (Appli > Footer) */
+  overflow: hidden; /* Pas de scroll global sur la page */
+
+  background-color: #282a36; /* Thème Dracula */
+  color: #f8f8f2;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- CONTENEUR PRINCIPAL (ÉDITEUR + ÉNONCÉ) --- */
+.container.top-row {
+  flex: 1; /* Prend tout l'espace disponible au-dessus du footer */
+  display: flex; /* Met les 2 colonnes côte à côte */
+  width: 100%;
+  padding: 0;
+  gap: 10px; /* Espace entre les deux colonnes */
+  box-sizing: border-box;
+}
+
+/* --- ZONES (GAUCHE ET DROITE) --- */
+.code-area {
+  flex: 1; /* Prend 50% de l'espace */
+  width: 0; /* Astuce pour que le scroll fonctionne bien */
+  min-width: 0;
+
+  border: 1px solid #6272a4;
+  background-color: #44475a;
+
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Supprime la barre de scroll globale du navigateur */
-
-  background-color: #282a36;
-  color: #f8f8f2;
-  font-family: sans-serif;
-}
-.container.top-row {
-  flex: 1; /* C'est la clé : ça pousse le footer tout en bas */
-  display: flex; /* Met l'éditeur et l'énoncé côte à côte */
-  width: 100%;
-  padding: 0; /* On enlève les marges pour coller aux bords */
-  gap: 10px; /* Petit espace entre les colonnes */
-  box-sizing: border-box;
-}
-
-.code-area,
-.output-area {
-  flex: 1; /* ⭐️ IMPORTANT : Force l'élément à prendre 50% de l'espace */
-  width: 0; /* ⭐️ ASTUCE : Empêche l'éditeur de pousser les bords */
-  min-width: 0; /* Sécurité pour flexbox */
-  border: 1px solid #6272a4;
-  padding: 3px;
-  background-color: #44475a;
-  height: 100%; /* Prend toute la hauteur du parent */
-  display: flex;
-  flex-direction: column; /* Empile Titre, Éditeur, Boutons */
   padding: 10px;
   box-sizing: border-box;
-  /* Si le contenu est trop grand, on scroll DANS la zone, pas la page */
+
+  /* Scroll à l'intérieur de la zone si besoin */
   overflow-y: auto;
-  font-size: 1.2em; /* Taille augmentée */
-  line-height: 1.6;
+
+  /* Typographie */
+  font-size: 1.2em;
+  line-height: 1.6; /* Interligne aéré */
 }
-.output-area {
-  background-color: #dedede;
-}
+
+/* Titres H3 par défaut */
 .code-area h3 {
-  color: #50fa7b;
-  margin-top: 0; /* Supprime la marge du haut */
-  margin-bottom: 10px;
-}
-.output-area h3 {
-  color: #0a6120;
-  margin-top: 0; /* Supprime la marge du haut */
+  color: #50fa7b; /* Vert Dracula */
+  margin-top: 0;
   margin-bottom: 10px;
 }
 
-/* Groupe de boutons */
-.buttons-row {
+/* --- NOUVEAU : BARRE D'ENTÊTE (Pour la colonne de droite) --- */
+.exercises-top-bar {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: space-between; /* Titre à gauche, Boutons à droite */
+  align-items: center; /* Centrage vertical */
+  border-bottom: 1px solid #6272a4;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  min-height: 50px;
 }
 
-.CodeMirror {
-  background-color: #282a36;
-  border: 1px solid #6272a4;
-  font-size: 16px;
-  flex: 1; /* Prend tout l'espace disponible en hauteur dans sa colonne */
-  height: auto; /* Écrase la hauteur par défaut */
-}
-
-iframe {
-  width: 100%;
-  height: 300px;
+.exercises-top-bar h3 {
+  margin: 0; /* Enlève les marges pour bien aligner */
   border: none;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px; /* Espace entre les boutons */
+  align-items: center;
+}
+
+/* --- ÉDITEUR CODEMIRROR --- */
+.CodeMirror {
+  flex: 1; /* Prend toute la hauteur restante dans sa colonne */
+  height: auto !important; /* Force la hauteur auto */
+  border: 1px solid #6272a4;
+  font-size: 16px; /* Taille de police du code */
+  border-radius: 4px;
 }
 
 /* --- BOUTONS --- */
+/* Zone boutons colonne gauche */
+.buttons-row {
+  margin-top: 10px;
+  display: flex;
+}
 
+/* Style commun des boutons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 1. Bouton "Tester le code" (Vert) */
 #runButton {
   background-color: #50fa7b;
   color: #282a36;
-  border: none;
-  padding: 8px 15px;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
+  font-size: 1.2em; /* ⭐️ Police augmentée */
+  padding: 12px 24px; /* ⭐️ Bouton plus gros */
+  width: 100%; /* Prend toute la largeur sous l'éditeur */
 }
 #runButton:hover {
   background-color: #049328;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-#assistantButton,
-#closeModalButton {
-  background-color: #bd93f9;
-  color: #282a36;
-  border: none;
-  padding: 8px 15px;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
 }
 
+/* 2. Bouton "Nouvel Exercice" (Bleu) */
+#newExerciseButton {
+  background-color: #4d61d5;
+  color: #f8f8f2;
+  font-size: 1.1em; /* ⭐️ Police augmentée */
+  padding: 10px 20px; /* ⭐️ Bouton plus gros */
+}
+#newExerciseButton:hover {
+  background-color: #3020c4;
+}
+
+/* 3. Bouton "Assistant" et "Fermer" (Mauve) */
+#assistantButton,
+#closeModalButton,
+#closeExecutionButton {
+  background-color: #bd93f9;
+  color: #282a36;
+  padding: 5px 15px; /* Taille standard */
+}
 #assistantButton:hover,
 #closeModalButton:hover {
   background-color: #ff79c6;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
 }
 
-#newExerciseButton {
-  background-color: #4d61d5;
-  color: #282a36;
-  border: none;
-  padding: 8px 15px;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+#assistantButton img {
+  display: block; /* Enlève l'espace parasite sous l'image */
 }
 
-#newExerciseButton:hover {
-  background-color: #3020c4;
-  transform: translateY(-2px);
-}
-
-/* --- MODALE (POP-UP) --- */
+/* --- MODALES (POP-UP) --- */
 .modal {
-  display: none; /* Caché par défaut */
+  display: none;
   position: fixed;
   z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fond noir semi-transparent */
+  background-color: rgba(0, 0, 0, 0.7); /* Fond noir foncé */
+  backdrop-filter: blur(2px); /* Petit effet de flou derrière */
 }
 
 .modal-content {
-  background-color: #282a36; /* Fond sombre thème Dracula */
+  background-color: #282a36;
   color: #f8f8f2;
-  margin: 5% auto; /* 10% du haut et centré */
-  padding: 20px;
-  border: 2px solid #bd93f9; /* Bordure mauve */
-  width: 80%; /* Prend 80% de la largeur de l'écran */
-  max-width: 800px; /* Mais pas plus de 800px */
-  height: 80%; /* Prend 80% de la hauteur de l'écran */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+  /* Positionnement et Taille */
+  margin: 5% auto; /* 5% du haut */
+  width: 80%;
+  max-width: 900px;
+  height: 80%; /* Hauteur fixe relative à l'écran */
+
+  border: 2px solid #bd93f9;
   border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: hidden; /* Empêche le contenu de déborder */
 }
-.modal-footer {
-  margin-top: 0;
-  padding: 15px;
-  background-color: #282a36; /* Même couleur de fond pour être propre */
-  border-top: 1px solid #44475a; /* Une petite ligne de séparation */
-  flex-shrink: 0; /* ⛔️ INTERDIT de rétrécir ce bloc */
-  z-index: 10; /* On le met au-dessus au cas où */
-}
+
 .modal-content h3 {
   margin-top: 0;
   color: #bd93f9;
   border-bottom: 1px solid #44475a;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 #assistantContent {
-  flex: 1; /* Prend tout l'espace disponible */
-  overflow-y: auto; /* Barre de défilement si le texte est trop long */
-  font-size: 14px;
+  flex: 1; /* Prend tout l'espace central */
+  overflow-y: auto; /* Scroll uniquement ici */
+  padding: 10px;
+  font-size: 1.1em;
   line-height: 1.5;
 }
 
 .modal-footer {
-  margin-top: 15px;
+  margin-top: 0;
+  padding: 15px;
+  background-color: #282a36;
+  border-top: 1px solid #44475a;
+  flex-shrink: 0; /* Ne s'écrase jamais */
   text-align: right;
 }
 
-/* Styles Markdown */
-#exerciseContainer .markdown-content,
+/* --- STYLES MARKDOWN (ÉNONCÉ & ASSISTANT) --- */
+.markdown-content,
 #assistantContent {
   color: #f8f8f2;
 }
-#exerciseContainer .markdown-content h4 {
+.markdown-content h4 {
   color: #ff79c6;
   font-size: 1.1em;
+  margin-top: 15px;
 }
-#exerciseContainer .markdown-content strong {
+.markdown-content strong {
   color: #50fa7b;
 }
-#exerciseContainer .markdown-content ul {
+.markdown-content ul {
   padding-left: 20px;
 }
-footer {
-  /* 1. Apparence */
-  background-color: #282a36; /* Fond sombre (pour voir ton texte clair) */
-  border-top: 1px solid #bd93f9; /* Petite bordure violette sympa */
-  padding: 15px;
-  color: #dedede;
+.markdown-content pre {
+  background: #21222c;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
 
-  /* 2. Positionnement dans la page */
+/* --- FOOTER (PIED DE PAGE) --- */
+footer {
+  background-color: #282a36;
+  border-top: 1px solid #bd93f9;
+  padding: 15px;
   flex-shrink: 0; /* Ne s'écrase jamais */
 
-  /* 3. ALIGNEMENT MAGIQUE (Flexbox) */
+  /* Centrage parfait */
   display: flex;
-  justify-content: center; /* Centre horizontalement */
-  align-items: center; /* Centre verticalement */
+  justify-content: center;
+  align-items: center;
 }
 
 footer p {
-  color: #dedede; /* La couleur que tu voulais */
-  font-size: 1.1em; /* Taille augmentée */
-  margin: 0; /* Important pour que le centrage soit parfait */
+  color: #dedede;
+  font-size: 1.1em;
+  margin: 0;
   text-align: center;
+  line-height: 1.4;
 }
