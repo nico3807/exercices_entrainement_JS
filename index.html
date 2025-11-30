@@ -21,30 +21,37 @@
         <h3>Éditeur de code JavaScript :</h3>
         <textarea id="editor">// Ajoutez votre code JS ici</textarea>
         <div class="buttons-row">
-  <button id="runButton">▶ Tester le code</button>
-</div>
+          <button id="runButton">▶ Tester le code</button>
+        </div>
       </div>
 
       <!-- COLONNE DROITE : ÉNONCÉ DE L'EXERCICE -->
       <div class="code-area">
-  
-  <div class="exercises-top-bar">
-      <h3>Énoncé de l'exercice :</h3>
-      <div class="header-buttons">
-          <button id="newExerciseButton">Nouvel Exercice</button>
-          <button id="assistantButton" title="Demander de l'aide à l'assistant IA">
-              <img src="./icone_assistant.jpg" width="30" height="30" style="vertical-align: middle; border-radius: 50%;" alt="IA">
-          </button>
+        <div class="exercises-top-bar">
+          <h3>Énoncé de l'exercice :</h3>
+          <div class="header-buttons">
+            <button id="newExerciseButton">Nouvel Exercice</button>
+            <button
+              id="assistantButton"
+              title="Demander de l'aide à l'assistant IA"
+            >
+              Assistant Pédagogique
+              <img
+                src="./icone_assistant.jpg"
+                width="40"
+                height="40"
+                style="vertical-align: middle; border-radius: 50%"
+                alt="IA"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div id="exerciseContainer">
+          <p>Cliquez sur "Nouvel Exercice" pour commencer.</p>
+        </div>
       </div>
-  </div>
-
-  <div id="exerciseContainer">
-    <p>Cliquez sur "Nouvel Exercice" pour commencer.</p>
-  </div>
-
-</div>
     </div>
-    <br />
     <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->
     <!-- ⭐️ NOUVEAU : Structure de la Pop-up (Modale) -->
     <div id="assistantModal" class="modal">
@@ -87,6 +94,7 @@
       </div>
     </div>
     <footer>
+      <p>
         © 2025 — BUT MMI Béziers - MAURIN N.<br />
         R1.12 Développement Web
       </p>

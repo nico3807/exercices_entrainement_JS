@@ -25,10 +25,10 @@ body {
 
 /* --- ZONES (GAUCHE ET DROITE) --- */
 .code-area {
-  flex: 1; /* Prend 50% de l'espace */
-  width: 0; /* Astuce pour que le scroll fonctionne bien */
+  flex: 1;
+  width: 0;
   min-width: 0;
-
+  min-height: 0;
   border: 1px solid #6272a4;
   background-color: #44475a;
 
@@ -37,19 +37,36 @@ body {
   padding: 10px;
   box-sizing: border-box;
 
-  /* Scroll à l'intérieur de la zone si besoin */
-  overflow-y: auto;
+  /* ⛔️ IMPORTANT : On interdit le scroll sur le conteneur principal */
+  overflow: hidden;
 
-  /* Typographie */
   font-size: 1.2em;
-  line-height: 1.6; /* Interligne aéré */
+  line-height: 1.6;
 }
 
 /* Titres H3 par défaut */
-.code-area h3 {
-  color: #50fa7b; /* Vert Dracula */
-  margin-top: 0;
-  margin-bottom: 10px;
+.code-area {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+
+  border: 1px solid #6272a4;
+  background-color: #44475a;
+
+  /* ⭐️ SOLUTION MAGIQUE : CSS GRID */
+  display: grid;
+  /* Cette ligne définit 3 rangées : 
+     1. auto = taille du titre
+     2. 1fr  = TOUT l'espace restant (le contenu)
+     3. auto = taille des boutons (s'il y en a) */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  font-size: 1.2em;
+  line-height: 1.6;
 }
 
 /* --- NOUVEAU : BARRE D'ENTÊTE (Pour la colonne de droite) --- */
@@ -75,12 +92,21 @@ body {
 }
 
 /* --- ÉDITEUR CODEMIRROR --- */
+/* --- ÉDITEUR CODEMIRROR --- */
 .CodeMirror {
-  flex: 1; /* Prend toute la hauteur restante dans sa colonne */
-  height: auto !important; /* Force la hauteur auto */
+  /* Il n'a plus besoin de flex, car il est dans une case de grille */
+  height: 100% !important; /* Remplit sa case à 100% */
+
   border: 1px solid #6272a4;
-  font-size: 16px; /* Taille de police du code */
+  font-size: 16px;
   border-radius: 4px;
+}
+
+/* --- CONTENEUR ÉNONCÉ --- */
+#exerciseContainer {
+  height: 100%; /* Remplit sa case à 100% */
+  overflow-y: auto; /* L'ascenseur est ICI */
+  padding-right: 5px;
 }
 
 /* --- BOUTONS --- */
@@ -88,6 +114,10 @@ body {
 .buttons-row {
   margin-top: 10px;
   display: flex;
+
+  /* 🛡️ SÉCURITÉ : Interdit au navigateur d'écraser cette zone */
+  flex-shrink: 0;
+  min-height: 50px; /* On réserve une taille minimum pour les boutons */
 }
 
 /* Style commun des boutons */

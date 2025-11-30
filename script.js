@@ -241,21 +241,20 @@ if (assistantButton) assistantButton.addEventListener("click", askAssistant);
 if (closeModalButton)
   closeModalButton.addEventListener("click", closeAssistant);
 
-window.onclick = function (event) {
-  // Gestion de la fermeture de la modale de résultat
-  if (closeExecutionButton) {
-    closeExecutionButton.addEventListener("click", () => {
-      executionModal.style.display = "none";
-    });
-  }
+// Gestion du bouton fermer de la modale d'exécution
+if (closeExecutionButton) {
+  closeExecutionButton.addEventListener("click", () => {
+    executionModal.style.display = "none";
+  });
+}
 
-  // Gestion des clics en dehors des fenêtres (pour fermer les deux modales)
-  window.onclick = function (event) {
-    if (event.target == assistantModal) {
-      closeAssistant();
-    }
-    if (event.target == executionModal) {
-      executionModal.style.display = "none";
-    }
-  };
+// Gestion globale des clics en dehors des fenêtres
+// ⭐️ CORRECTION : Une seule fonction window.onclick propre
+window.onclick = function (event) {
+  if (event.target == assistantModal) {
+    closeAssistant();
+  }
+  if (event.target == executionModal) {
+    executionModal.style.display = "none";
+  }
 };
