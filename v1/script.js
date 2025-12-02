@@ -19,8 +19,6 @@ const assistantModal = document.getElementById("assistantModal");
 const assistantContent = document.getElementById("assistantContent");
 const closeModalButton = document.getElementById("closeModalButton");
 const assistantButton = document.getElementById("assistantButton");
-const topicModal = document.getElementById("topicModal");
-const closeTopicButton = document.getElementById("closeTopicButton");
 // ⭐️ NOUVEAU : Éléments de la modale d'exécution
 const executionModal = document.getElementById("executionModal");
 const closeExecutionButton = document.getElementById("closeExecutionButton");
@@ -93,95 +91,80 @@ function runCode() {
 
 // --- 3. GÉNÉRATION D'EXERCICE ---
 
-// --- 3. GÉNÉRATION D'EXERCICE (Modifiée) ---
-
-// Fonction 1 : Appelée quand on clique sur un bouton de sujet
-async function loadPromptAndRun(fileName) {
-  // 1. On ferme la modale de choix
-  topicModal.style.display = "none";
-
-  // 2. On essaie de lire le fichier texte correspondant
-  try {
-    const response = await fetch("./" + fileName); // Suppose que les fichiers sont à la racine
-    if (!response.ok) throw new Error("Fichier introuvable");
-    const promptContent = await response.text();
-
-    // 3. On lance la génération avec ce contenu spécifique
-    generateExercise(promptContent);
-  } catch (error) {
-    alert(
-      "Erreur : Impossible de lire le fichier " +
-        fileName +
-        ". Vérifie qu'il existe !"
-    );
-    console.error(error);
-  }
-}
-
-// Fonction 2 : La génération (Mise à jour pour accepter les instructions)
-async function generateExercise(specificInstructions = "") {
+async function generateExercise() {
   if (newExerciseButton) newExerciseButton.disabled = true;
-
   exerciseContainer.innerHTML =
-    '<p style="color: #e15c37ff;">Création de l\'exercice en cours... 🤖</p>';
+    '<p style="color: #e15c37ff;">Chargement de l\'exercice... 🤖</p>';
+  const systemPrompt = `
+    Tu es un professeur expert en pédagogie pour le BUT MMI (Métiers du Multimédia et de l'Internet). 
+    Tu dois créer un exercice court de JavaScript (niveau débutant/S1) pour un étudiant.
+Contexte de l'exercice : L'exercice doit cibler une notion fondamentale (variables, boucles, tests conditionnels, tests logiques, listes, tableaux ou manipulation simple du DOM) mais appliquée à l'écosystème du jeu vidéo au sens large, en lien avec les compétences MMI :
+1. Interface (UI/UX) : Barre de vie, gestion de menu, inventaire.
+2. Narration : Système de dialogue, choix textuels.
+3. Data : Calcul de score, fiche de personnage (objet JS).
+4. Gameplay : Logique simple de déplacement ou collision.
+Contraintes de rédaction :
+Adresse-toi directement à l'étudiant (tu).
+Pas d'introduction ni de conclusion, va droit au but.
+Utilise un ton encourageant mais technique.
+L'énoncé ne doit pas dépasser 400 mots.
+Le script doit être testable dans un éditeur type CodeMirror (console.log ou alert acceptés).
+Structure obligatoire de la réponse :
+🎯 Consignes
+[Insérer ici l'énoncé clair avec des points précis à réaliser étape par étape]
+Code à Compléter
+[Insérer ici un bloc de code JavaScript avec des commentaires // À faire là où l'étudiant doit écrire son code. 
+Le code doit être fonctionnel une fois complété.]"
+    Formatte la réponse en Markdown.`;
 
-  // Le prompt "Système" reste le cadre général (Persona + Format de réponse)
-  // J'ai retiré la partie "Contexte" pour la laisser au fichier texte spécifique
-  const baseSystemPrompt = `
-    Tu es un professeur expert en pédagogie pour le BUT MMI. 
-    Tu dois créer un exercice court de JavaScript.
-    
-    Contraintes de rédaction :
-    - Adresse-toi directement à l'étudiant (tu).
-    - Pas d'introduction ni de conclusion.
-    - L'énoncé ne doit pas dépasser 400 mots.
-    
-    Structure OBLIGATOIRE de la réponse (Respecte scrupuleusement le Markdown) :
-    🎯 Consignes
-    [Insérer l'énoncé]
-    
-    Code à Compléter
-    [Insérer le bloc de code JS]
-  `;
-
-  // On combine la demande utilisateur avec le contenu du fichier texte
-  const userQuery = `Génère un exercice JavaScript débutant. 
-  Voici les consignes pédagogiques spécifiques à respecter pour cet exercice : 
-  ${specificInstructions}`;
+  const userQuery =
+    "Génère un nouvel exercice JavaScript pour un étudiant débutant.";
 
   try {
-    const result = await callGemini(baseSystemPrompt, userQuery);
+    const result = await callGemini(systemPrompt, userQuery);
     const text = result || "Erreur de génération.";
 
-    currentExerciseText = text; // Sauvegarde pour l'assistant
+    // Sauvegarde du texte complet pour l'assistant (il a besoin du contexte complet)
+    currentExerciseText = text;
 
-    // --- LOGIQUE DE SÉPARATION (Identique à avant) ---
+    // --- ⭐️ LOGIQUE DE SÉPARATION (Consignes VS Code) ---
+
+    // On cherche le marqueur "Code à Compléter" (avec ou sans balises markdown autour)
+    // Le regex cherche "Code à Compléter" en étant flexible sur la casse et les symboles (#, *)
     const separatorRegex =
       /#{1,6}\s*Code à Compléter|\*\*Code à Compléter\*\*|Code à Compléter/i;
     const splitMatch = text.match(separatorRegex);
 
     let instructionsPart = text;
-    let codePart = "// Code ici...";
+    let codePart = "// Écris ton code ici pour résoudre l'exercice !";
 
     if (splitMatch) {
       const splitIndex = splitMatch.index;
+
+      // 1. Partie Instructions : Tout ce qui est AVANT le séparateur
       instructionsPart = text.substring(0, splitIndex).trim();
+
+      // 2. Partie Code : Tout ce qui est APRÈS le séparateur (+ la longueur du séparateur)
       let rawCodePart = text
         .substring(splitIndex + splitMatch[0].length)
         .trim();
+
+      // Nettoyage du code : On enlève les balises Markdown (```javascript ... ```)
+      // On enlève ```javascript ou ```js au début, et ``` à la fin
       codePart = rawCodePart
         .replace(/^```(javascript|js)?/i, "")
         .replace(/```$/, "")
         .trim();
     }
 
-    exerciseContainer.innerHTML = `<div class="markdown-content">${formatMarkdown(
-      instructionsPart
-    )}</div>`;
+    // Mise à jour de l'affichage de l'énoncé (sans le code)
+    const htmlContent = formatMarkdown(instructionsPart);
+    exerciseContainer.innerHTML = `<div class="markdown-content">${htmlContent}</div>`;
+    // Mise à jour de l'éditeur avec le code extrait
     codeMirrorInstance.setValue(codePart);
   } catch (error) {
     console.error(error);
-    exerciseContainer.innerHTML = `<p style="color: red;">Erreur API.</p>`;
+    exerciseContainer.innerHTML = `<p style="color: red;">Erreur lors de la génération. Réessayez...</p>`;
   } finally {
     if (newExerciseButton) newExerciseButton.disabled = false;
   }
@@ -264,25 +247,9 @@ function formatMarkdown(text) {
 const runBtn = document.getElementById("runButton");
 if (runBtn) runBtn.addEventListener("click", runCode);
 
-if (newExerciseButton) {
-  newExerciseButton.addEventListener("click", () => {
-    topicModal.style.display = "block";
-  });
-}
+if (newExerciseButton)
+  newExerciseButton.addEventListener("click", generateExercise);
 
-// Gestion fermeture modale Sujet
-if (closeTopicButton) {
-  closeTopicButton.addEventListener("click", () => {
-    topicModal.style.display = "none";
-  });
-}
-
-// Mise à jour de la fermeture globale au clic dehors
-window.onclick = function (event) {
-  if (event.target == assistantModal) assistantModal.style.display = "none";
-  if (event.target == executionModal) executionModal.style.display = "none";
-  if (event.target == topicModal) topicModal.style.display = "none"; // Ajout ici
-};
 if (assistantButton) assistantButton.addEventListener("click", askAssistant);
 if (closeModalButton)
   closeModalButton.addEventListener("click", closeAssistant);

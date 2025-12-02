@@ -264,23 +264,3 @@ footer {
   padding: 15px;
   text-align: center;
 }
-/* --- NOUVEAU : Styles pour la modale de choix --- */
-.topic-buttons-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 20px;
-}
-
-.topic-btn {
-  background-color: #6272a4; /* Couleur Dracula intermédiaire */
-  color: white;
-  padding: 15px;
-  font-size: 1.1em;
-  border: 1px solid #bd93f9;
-}
-
-.topic-btn:hover {
-  background-color: #bd93f9;
-  color: #282a36;
-}
