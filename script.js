@@ -28,13 +28,18 @@ let currentExerciseText = "Aucun exercice généré pour le moment.";
 
 // --- 2. EXÉCUTION DU CODE (RunCode) ---
 
+// --- 2. EXÉCUTION DU CODE (RunCode) ---
+
 function runCode() {
   // ⭐️ NOUVEAU : On ouvre la pop-up dès qu'on lance le test
   if (executionModal) executionModal.style.display = "block";
   const rawCode = codeMirrorInstance.getValue();
 
   // 🛡️ SÉCURITÉ : Échappement des caractères spéciaux
-  let code = rawCode.replace(/`/g, "\\`");
+  // L'ordre est CRUCIAL : on échappe d'abord les antislashs (\)
+  // Sinon, on échapperait les antislashs ajoutés pour les autres caractères !
+  let code = rawCode.replace(/\\/g, "\\\\");
+  code = code.replace(/`/g, "\\`");
   code = code.replace(/\${/g, "\\${");
 
   const outputFrame = document.getElementById("outputFrame");
@@ -58,6 +63,7 @@ function runCode() {
 
   setTimeout(() => {
     const scriptElement = iframeDoc.createElement("script");
+    // On insère le code sécurisé dans le gabarit
     const scriptContent = `
         var originalLog = console.log;
         console.log = function(...args) {
