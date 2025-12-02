@@ -15,9 +15,10 @@
   </head>
   <body>
     <!-- LIGNE 1 : ÉDITEUR (50%) | ÉNONCÉ (50%) -->
+
     <div class="container top-row">
-      <!-- COLONNE GAUCHE : CODE ET BOUTONS -->
-      <div class="code-area">
+      <!-- Zone Éditeur -->
+      <div class="code-area editor">
         <h3>Éditeur de code JavaScript :</h3>
         <textarea id="editor">// Ajoutez votre code JS ici</textarea>
         <div class="buttons-row">
@@ -25,33 +26,22 @@
         </div>
       </div>
 
-      <!-- COLONNE DROITE : ÉNONCÉ DE L'EXERCICE -->
-      <div class="code-area">
+      <!-- Zone Énoncé -->
+      <div class="code-area statement">
         <div class="exercises-top-bar">
           <h3>Énoncé de l'exercice :</h3>
           <div class="header-buttons">
             <button id="newExerciseButton">Nouvel Exercice</button>
-            <button
-              id="assistantButton"
-              title="Demander de l'aide à l'assistant IA"
-            >
-              Assistant Pédagogique
-              <img
-                src="./icone_assistant.jpg"
-                width="40"
-                height="40"
-                style="vertical-align: middle; border-radius: 50%"
-                alt="IA"
-              />
-            </button>
+            <button id="assistantButton">Assistant</button>
           </div>
         </div>
-
         <div id="exerciseContainer">
-          <p>Cliquez sur "Nouvel Exercice" pour commencer.</p>
+          Nouvel Exercice Assistant Pédagogique IA<br />
+          Cliquez sur "Nouvel Exercice" pour commencer.
         </div>
       </div>
     </div>
+
     <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->
     <!-- ⭐️ NOUVEAU : Structure de la Pop-up (Modale) -->
     <div id="assistantModal" class="modal">

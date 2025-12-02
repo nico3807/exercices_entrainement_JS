@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Éditeur & Énoncé Scrollable</title>
+    <link rel="stylesheet" href="style_corrige.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css"
+    />
+  </head>
+  <body>
+    <div class="container top-row">
+      <!-- Zone Éditeur -->
+      <div class="code-area editor">
+        <h3>Éditeur de code JavaScript :</h3>
+        <textarea id="editor">// Ajoutez votre code JS ici</textarea>
+        <div class="buttons-row">
+          <button id="runButton">▶ Tester le code</button>
+        </div>
+      </div>
+
+      <!-- Zone Énoncé -->
+      <div class="code-area statement">
+        <div class="exercises-top-bar">
+          <h3>Énoncé de l'exercice :</h3>
+          <div class="header-buttons">
+            <button id="newExerciseButton">Nouvel Exercice</button>
+            <button id="assistantButton">Assistant</button>
+          </div>
+        </div>
+        <div id="exerciseContainer">
+          Cliquez sur "Nouvel Exercice" pour commencer.
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 — BUT MMI Béziers - MAURIN N. | R1.12 Développement Web</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -7,7 +7,6 @@ body {
   display: flex;
   flex-direction: column; /* Organisation verticale (Appli > Footer) */
   overflow: hidden; /* Pas de scroll global sur la page */
-
   background-color: #282a36; /* Thème Dracula */
   color: #f8f8f2;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -15,58 +14,32 @@ body {
 
 /* --- CONTENEUR PRINCIPAL (ÉDITEUR + ÉNONCÉ) --- */
 .container.top-row {
-  flex: 1; /* Prend tout l'espace disponible au-dessus du footer */
-  display: flex; /* Met les 2 colonnes côte à côte */
+  flex: 1; /* occupe tout l'espace disponible */
+  display: flex;
   width: 100%;
+  gap: 10px;
   padding: 0;
-  gap: 10px; /* Espace entre les deux colonnes */
-  box-sizing: border-box;
+  height: 0; /* clé pour que minmax fonctionne */
+  min-height: 0; /* empêche l'étirement */
 }
 
 /* --- ZONES (GAUCHE ET DROITE) --- */
 .code-area {
   flex: 1;
-  width: 0;
-  min-width: 0;
-  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   border: 1px solid #6272a4;
   background-color: #44475a;
-
-  display: flex;
-  flex-direction: column;
   padding: 10px;
   box-sizing: border-box;
-
-  /* ⛔️ IMPORTANT : On interdit le scroll sur le conteneur principal */
   overflow: hidden;
-
-  font-size: 1.2em;
-  line-height: 1.6;
+  min-height: 0; /* empêche le débordement */
 }
 
-/* Titres H3 par défaut */
-.code-area {
-  flex: 1;
-  width: 0;
-  min-width: 0;
-
-  border: 1px solid #6272a4;
-  background-color: #44475a;
-
-  /* ⭐️ SOLUTION MAGIQUE : CSS GRID */
+.code-area.editor {
   display: grid;
-  /* Cette ligne définit 3 rangées : 
-     1. auto = taille du titre
-     2. 1fr  = TOUT l'espace restant (le contenu)
-     3. auto = taille des boutons (s'il y en a) */
-  grid-template-rows: auto minmax(0, 1fr) auto;
-
-  padding: 10px;
-  box-sizing: border-box;
+  grid-template-rows: auto minmax(0, 1fr) auto; /* Titre / Éditeur / Boutons */
   overflow: hidden;
-
-  font-size: 1.2em;
-  line-height: 1.6;
 }
 
 /* --- NOUVEAU : BARRE D'ENTÊTE (Pour la colonne de droite) --- */
@@ -92,29 +65,35 @@ body {
 }
 
 /* --- ÉDITEUR CODEMIRROR --- */
-/* --- ÉDITEUR CODEMIRROR --- */
 .CodeMirror {
-  /* Il n'a plus besoin de flex, car il est dans une case de grille */
   height: 100% !important; /* Remplit sa case à 100% */
-
+  overflow-y: auto; /* Scroll si code trop long */
+  scrollbar-gutter: stable; /* Évite le décalage quand la barre apparaît */
   border: 1px solid #6272a4;
   font-size: 16px;
   border-radius: 4px;
 }
 
-/* --- CONTENEUR ÉNONCÉ --- */
-#exerciseContainer {
-  height: 100%; /* Remplit sa case à 100% */
-  overflow-y: auto; /* L'ascenseur est ICI */
-  padding-right: 5px;
+/* Zone Énoncé */
+.code-area.statement {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr); /* Titre / Contenu */
+  overflow: hidden;
 }
 
+/* --- CONTENEUR ÉNONCÉ --- */
+
+#exerciseContainer {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding-right: 5px;
+  min-height: 0; /* empêche l'étirement */
+}
 /* --- BOUTONS --- */
 /* Zone boutons colonne gauche */
 .buttons-row {
   margin-top: 10px;
   display: flex;
-
   /* 🛡️ SÉCURITÉ : Interdit au navigateur d'écraser cette zone */
   flex-shrink: 0;
   min-height: 50px; /* On réserve une taille minimum pour les boutons */
@@ -139,10 +118,11 @@ button:hover {
 #runButton {
   background-color: #50fa7b;
   color: #282a36;
-  font-size: 1.2em; /* ⭐️ Police augmentée */
-  padding: 12px 24px; /* ⭐️ Bouton plus gros */
+  font-size: 1.2em; /* ⭐ Police augmentée */
+  padding: 12px 24px; /* ⭐ Bouton plus gros */
   width: 100%; /* Prend toute la largeur sous l'éditeur */
 }
+
 #runButton:hover {
   background-color: #049328;
 }
@@ -151,9 +131,10 @@ button:hover {
 #newExerciseButton {
   background-color: #4d61d5;
   color: #f8f8f2;
-  font-size: 1.1em; /* ⭐️ Police augmentée */
-  padding: 10px 20px; /* ⭐️ Bouton plus gros */
+  font-size: 1.1em; /* ⭐ Police augmentée */
+  padding: 10px 20px; /* ⭐ Bouton plus gros */
 }
+
 #newExerciseButton:hover {
   background-color: #3020c4;
 }
@@ -166,6 +147,7 @@ button:hover {
   color: #282a36;
   padding: 5px 15px; /* Taille standard */
 }
+
 #assistantButton:hover,
 #closeModalButton:hover {
   background-color: #ff79c6;
@@ -191,17 +173,14 @@ button:hover {
 .modal-content {
   background-color: #282a36;
   color: #f8f8f2;
-
   /* Positionnement et Taille */
   margin: 5% auto; /* 5% du haut */
   width: 80%;
   max-width: 900px;
   height: 80%; /* Hauteur fixe relative à l'écran */
-
   border: 2px solid #bd93f9;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Empêche le contenu de déborder */
@@ -236,17 +215,21 @@ button:hover {
 #assistantContent {
   color: #f8f8f2;
 }
+
 .markdown-content h4 {
   color: #ff79c6;
   font-size: 1.1em;
   margin-top: 15px;
 }
+
 .markdown-content strong {
   color: #50fa7b;
 }
+
 .markdown-content ul {
   padding-left: 20px;
 }
+
 .markdown-content pre {
   background: #21222c;
   padding: 10px;
@@ -260,7 +243,6 @@ footer {
   border-top: 1px solid #bd93f9;
   padding: 15px;
   flex-shrink: 0; /* Ne s'écrase jamais */
-
   /* Centrage parfait */
   display: flex;
   justify-content: center;
@@ -268,9 +250,16 @@ footer {
 }
 
 footer p {
-  color: #dedede;
-  font-size: 1.1em;
   margin: 0;
   text-align: center;
   line-height: 1.4;
+}
+footer {
+  flex-shrink: 0;
+  font-size: 1.1em;
+  color: #dedede;
+  background-color: #282a36;
+  border-top: 1px solid #bd93f9;
+  padding: 15px;
+  text-align: center;
 }
