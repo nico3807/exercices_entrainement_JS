@@ -141,16 +141,26 @@ button:hover {
 }
 
 /* 3. Bouton "Assistant" et "Fermer" (Mauve) */
-#assistantButton,
+
 #closeModalButton,
-#closeExecutionButton {
+#closeExecutionButton,
+#closeTopicButton {
   background-color: #bd93f9;
   color: #282a36;
   padding: 5px 15px; /* Taille standard */
 }
+#assistantButton {
+  background-color: #bd93f9; /* On garde la couleur mauve */
+  color: #282a36;
 
+  /* 👇 ICI : On copie les dimensions de "Nouvel Exercice" */
+  font-size: 1.1em;
+  padding: 10px 20px;
+}
 #assistantButton:hover,
-#closeModalButton:hover {
+#closeModalButton:hover,
+#closeExecutionButton:hover,
+#closeTopicButton:hover {
   background-color: #ff79c6;
 }
 
