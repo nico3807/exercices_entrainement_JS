@@ -79,6 +79,7 @@ body {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr); /* Titre / Contenu */
   overflow: hidden;
+  font-size: 1.1em;
 }
 
 /* --- CONTENEUR ÉNONCÉ --- */

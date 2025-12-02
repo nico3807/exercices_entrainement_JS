@@ -1,3 +1,4 @@
+/* --- CONFIGURATION GÉNÉRALE --- */
 html,
 body {
   height: 100%;
@@ -11,17 +12,17 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Conteneur principal prend tout l'espace entre header et footer */
+/* --- CONTENEUR PRINCIPAL --- */
 .container.top-row {
-  flex: 1; /* occupe tout l'espace disponible */
+  flex: 1;
   display: flex;
   width: 100%;
   gap: 10px;
-  height: 0; /* clé pour que minmax fonctionne */
-  min-height: 0; /* empêche l'étirement */
+  height: 0; /* clé pour éviter l'étirement */
+  min-height: 0;
 }
 
-/* Zones gauche et droite */
+/* --- ZONES (Éditeur et Énoncé) --- */
 .code-area {
   flex: 1;
   display: grid;
@@ -31,23 +32,85 @@ body {
   padding: 10px;
   box-sizing: border-box;
   overflow: hidden;
-  min-height: 0; /* empêche le débordement */
+  min-height: 0;
 }
 
-/* Éditeur CodeMirror */
+/* --- Éditeur CodeMirror --- */
 .CodeMirror {
   height: 100% !important;
-  overflow-y: auto;
+  overflow-y: auto; /* Ascenseur seulement si nécessaire */
+  scrollbar-gutter: stable; /* Évite les sauts de mise en page */
+  border: 1px solid #6272a4;
+  font-size: 16px;
+  border-radius: 4px;
 }
 
-/* Énoncé */
+/* --- Zone Énoncé --- */
 #exerciseContainer {
-  overflow-y: auto;
+  overflow-y: auto; /* Ascenseur seulement si nécessaire */
+  scrollbar-gutter: stable;
   padding-right: 5px;
-  min-height: 0; /* empêche l'étirement */
+  min-height: 0;
 }
 
-/* Footer reste fixe */
+/* --- Boutons --- */
+.buttons-row {
+  margin-top: 10px;
+  display: flex;
+  flex-shrink: 0;
+  min-height: 50px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Bouton "Tester le code" */
+#runButton {
+  background-color: #50fa7b;
+  color: #282a36;
+  font-size: 1.2em;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+#runButton:hover {
+  background-color: #049328;
+}
+
+/* Bouton "Nouvel Exercice" */
+#newExerciseButton {
+  background-color: #4d61d5;
+  color: #f8f8f2;
+  font-size: 1.1em;
+  padding: 10px 20px;
+}
+
+#newExerciseButton:hover {
+  background-color: #3020c4;
+}
+
+/* Bouton "Assistant" */
+#assistantButton {
+  background-color: #bd93f9;
+  color: #282a36;
+  padding: 5px 15px;
+}
+
+#assistantButton:hover {
+  background-color: #ff79c6;
+}
+
+/* --- Footer --- */
 footer {
   flex-shrink: 0;
   background-color: #282a36;
