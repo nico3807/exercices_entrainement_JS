@@ -98,7 +98,7 @@ async function generateExercise() {
   const systemPrompt = `
     Tu es un professeur expert en pédagogie pour le BUT MMI (Métiers du Multimédia et de l'Internet). 
     Tu dois créer un exercice court de JavaScript (niveau débutant/S1) pour un étudiant.
-Contexte de l'exercice : L'exercice doit cibler une notion fondamentale (variables, boucles, tableaux, objets ou manipulation simple du DOM) mais appliquée à l'écosystème du jeu vidéo au sens large, en lien avec les compétences MMI :
+Contexte de l'exercice : L'exercice doit cibler une notion fondamentale (variables, boucles, tests conditionnels, tests logiques, listes, tableaux ou manipulation simple du DOM) mais appliquée à l'écosystème du jeu vidéo au sens large, en lien avec les compétences MMI :
 1. Interface (UI/UX) : Barre de vie, gestion de menu, inventaire.
 2. Narration : Système de dialogue, choix textuels.
 3. Data : Calcul de score, fiche de personnage (objet JS).
