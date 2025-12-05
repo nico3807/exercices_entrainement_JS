@@ -14,4 +14,4 @@ Structure obligatoire de la réponse :
 🎯 Consignes
 [Insérer ici l'énoncé clair avec des points précis à réaliser étape par étape]
 Code à Compléter
-[Insérer ici un bloc de code JavaScript avec des commentaires // TODO là où l'étudiant doit écrire son code. Le code doit être fonctionnel une fois complété.]"
+[Insérer ici un bloc de code JavaScript avec des commentaires conçis // TODO là où l'étudiant doit écrire son code. N'utilise pas de backticks. Le code doit être fonctionnel une fois complété.]"
