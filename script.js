@@ -181,7 +181,7 @@ async function generateExercise(specificInstructions = "") {
     codeMirrorInstance.setValue(codePart);
   } catch (error) {
     console.error(error);
-    exerciseContainer.innerHTML = `<p style="color: red;">Erreur API.</p>`;
+    exerciseContainer.innerHTML = `<p style="color: red;">Erreur API. Ça arrive... Regénère l'exercice !</p>`;
   } finally {
     if (newExerciseButton) newExerciseButton.disabled = false;
   }
