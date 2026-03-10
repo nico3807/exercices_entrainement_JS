@@ -1,0 +1,54 @@
+[33m4461f93[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fix: Mise à jour de la clé API pour la génération de contenu
+[33m53c150d[m fix: Correction de l'URL de l'API pour la génération de contenu
+[33m1951ec2[m Merge branch 'main' of https://github.com/nico3807/exercices_entrainement_JS
+[33mfb2a76e[m[33m ([m[1;31morigin/main[m[33m)[m Update API key and URL in script.js
+[33mcb2c54c[m fix: Mise à jour de la clé et de l'URL de l'API pour la génération de contenu
+[33m1830d62[m fix: Mise à jour de la clé API pour la génération de contenu
+[33mf73c882[m fix: Mise à jour de l'URL de l'API pour la génération de contenu
+[33mef517bf[m fix: Mise à jour de l'URL de l'API pour la génération de contenu
+[33m00427e1[m fix: Mise à jour de la clé API pour la génération de contenu
+[33mbfebf84[m feat: Ajout de la gestion des erreurs dans l'assistant pédagogique avec explication des erreurs
+[33m756f41a[m correction prompts
+[33m0a89e64[m correction des prompts
+[33m7743125[m fix: Simplification du texte du bouton "Tableaux" dans la modale
+[33m9dee99d[m fix: Mise à jour du style du bouton "Assistant" pour harmoniser les dimensions et la couleur avec les autres boutons
+[33ma03891a[m feat: Add interactive JavaScript exercise editor with CodeMirror integration
+[33mec91857[m fix: Aucune modification apportée au code
+[33md5261c3[m fix: Mise à jour du contexte de l'exercice pour inclure des notions supplémentaires en JavaScript
+[33mf03e473[m fix: Amélioration de la sécurité lors de l'exécution du code, ajout d'un échappement correct des caractères spéciaux
+[33m49b5818[m fix: Mise à jour du prompt pour la génération d'exercices, ajout de détails pédagogiques et contraintes spécifiques
+[33ma58d286[m fix: Mise à jour du titre de la page et amélioration de l'énoncé des exercices, ajustement de la taille de la police
+[33mbfa310f[m fix: Ajout d'un nouvel éditeur et énoncé scrollable, amélioration de la structure CSS
+[33m7ff2e4d[m fix: Mise à jour du titre de la page pour refléter le contenu des exercices avec assistance
+[33ma9cafff[m fix: Amélioration de la structure et du style de l'interface utilisateur, ajout de la gestion des événements pour les modales
+[33m4a25d91[m fix: Réorganisation de l'interface utilisateur et amélioration de l'affichage des exercices
+[33m5afc5f9[m fix: Correction du titre de l'éditeur de code et suppression d'un paragraphe inutile dans le pied de page
+[33mfa8eca5[m fix: Ajout de la couleur du texte dans le pied de page pour améliorer la lisibilité
+[33m80d2fc4[m fix: Amélioration de la mise en page et ajustements de style pour le contenu d'exécution et le pied de page
+[33m969cb33[m fix: Amélioration de la mise en page et ajustements de style pour l'éditeur et les modales
+[33m3168f48[m feat: Ajout de la modale d'exécution pour afficher les résultats du code
+[33m3f95b94[m fix: Correction des chemins d'accès aux fichiers et ajout d'icônes dans l'énoncé des exercices
+[33mc05296b[m fix: Amélioration des consignes pour la génération d'exercices en JavaScript
+[33m5b544fd[m feat: Add integrated JS editor with exercise generation and assistant modal
+[33m968e348[m Ajout de consignes et d'un code à compléter dans la fonction generateExercise
+[33m6c4cf59[m Aucune modification apportée au code
+[33me86a9c6[m Modification de la couleur du texte de chargement de l'exercice dans la fonction generateExercise
+[33m19e041f[m Optimisation du code : suppression des lignes vides dans index.html et script.js
+[33mec9b76b[m Suppression des fichiers .env, script.js et server.js
+[33me5de5a1[m Ajout de l'attribut type="module" au script.js pour activer les modules ES6
+[33m4d1104c[m Ajout de l'attribut type="module" au script.js pour activer les modules ES6
+[33m178ed4e[m cache clé
+[33mb34abfb[m ss
+[33m4f134e0[m s
+[33m7ddbea0[m d
+[33m53a9978[m qs
+[33mdad3b93[m s
+[33mb531305[m z
+[33mc866bd3[m ss
+[33mb61bb11[m Ajout du fichier de config pour la production
+[33m9fc6638[m q
+[33mb0819a2[m guillemets à la con
+[33m5792504[m g
+[33md704a78[m e
+[33mede6ee3[m config key
+[33m7443748[m push
