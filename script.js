@@ -7,7 +7,7 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
   theme: "dracula",
   lineWrapping: true,
 });
-
+//
 if (typeof APP_CONFIG === "undefined") {
   document.body.innerHTML =
     '<p style="color:red; padding:20px;">Fichier config.js manquant.</p>';
