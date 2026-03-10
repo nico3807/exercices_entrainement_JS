@@ -8,11 +8,14 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
   lineWrapping: true,
 });
 
-// Clé API et Configuration
-const API_KEY = "REMPLACE_rPAR_TA_CLÉ"; //Clé Gémini
+if (typeof APP_CONFIG === "undefined") {
+  document.body.innerHTML =
+    '<p style="color:red; padding:20px;">Fichier config.js manquant.</p>';
+  throw new Error("config.js introuvable.");
+}
 
+const API_KEY = APP_CONFIG.API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-latest:generateContent?key=${API_KEY}`;
-
 // Éléments du DOM
 const exerciseContainer = document.getElementById("exerciseContainer");
 const newExerciseButton = document.getElementById("newExerciseButton");
