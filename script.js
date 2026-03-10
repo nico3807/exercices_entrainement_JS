@@ -9,7 +9,7 @@ const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
 });
 
 // Clé API et Configuration
-const API_KEY = "REMPLACE_PAR_TA_CLÉ"; //Clé Gémini
+const API_KEY = "REMPLACE_rPAR_TA_CLÉ"; //Clé Gémini
 
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-latest:generateContent?key=${API_KEY}`;
 
