@@ -15,7 +15,7 @@ if (typeof APP_CONFIG === "undefined") {
 }
 
 const API_KEY = APP_CONFIG.API_KEY;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${API_KEY}`;
+const API_URL = `https://language.googleapis.com/v1/documents:analyzeEntities?key=${API_KEY}`;
 // Éléments du DOM
 const exerciseContainer = document.getElementById("exerciseContainer");
 const newExerciseButton = document.getElementById("newExerciseButton");
