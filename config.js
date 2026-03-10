@@ -1,0 +1,3 @@
+const APP_CONFIG = {
+  API_KEY: "AIzaSyCwlGNH4z-pqb0b3GbP4dyACEu5dDiMJ_o",
+};
