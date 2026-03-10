@@ -1,3 +1,3 @@
 const APP_CONFIG = {
-  API_KEY: "AIzaSyCwlGNH4z-pqb0b3GbP4dyACEu5dDiMJ_o",
+  API_KEY: "AIzaSyCq5QBTE819Av0Gtc7IrQytKmDACvbZMrI",
 };
