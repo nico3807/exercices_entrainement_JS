@@ -15,7 +15,7 @@ if (typeof APP_CONFIG === "undefined") {
 }
 
 const API_KEY = APP_CONFIG.API_KEY;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-pro:generateContent?key=${API_KEY}`;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 // Éléments du DOM
 const exerciseContainer = document.getElementById("exerciseContainer");
 const newExerciseButton = document.getElementById("newExerciseButton");
@@ -291,8 +291,12 @@ async function explainError() {
 
 async function callGemini(systemPrompt, userPrompt) {
   const payload = {
-    contents: [{ parts: [{ text: userPrompt }] }],
-    systemInstruction: { parts: [{ text: systemPrompt }] },
+    system_instruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+    generationConfig: {
+      temperature: 1,
+      maxOutputTokens: 2048,
+    },
   };
 
   const response = await fetch(API_URL, {
@@ -301,7 +305,12 @@ async function callGemini(systemPrompt, userPrompt) {
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
+  if (!response.ok) {
+    const errorBody = await response.json();
+    console.error("Détail erreur API:", errorBody);
+    throw new Error(`Erreur API: ${response.status}`);
+  }
+
   const result = await response.json();
   return result.candidates?.[0]?.content?.parts?.[0]?.text;
 }
@@ -335,30 +344,18 @@ if (closeTopicButton) {
   });
 }
 
-// Mise à jour de la fermeture globale au clic dehors
+// Gestion globale des clics en dehors des fenêtres
 window.onclick = function (event) {
-  if (event.target == assistantModal) assistantModal.style.display = "none";
+  if (event.target == assistantModal) closeAssistant();
   if (event.target == executionModal) executionModal.style.display = "none";
-  if (event.target == topicModal) topicModal.style.display = "none"; // Ajout ici
+  if (event.target == topicModal) topicModal.style.display = "none";
 };
+
 if (assistantButton) assistantButton.addEventListener("click", askAssistant);
 if (closeModalButton)
   closeModalButton.addEventListener("click", closeAssistant);
-
-// Gestion du bouton fermer de la modale d'exécution
 if (closeExecutionButton) {
   closeExecutionButton.addEventListener("click", () => {
     executionModal.style.display = "none";
   });
 }
-
-// Gestion globale des clics en dehors des fenêtres
-// ⭐️ CORRECTION : Une seule fonction window.onclick propre
-window.onclick = function (event) {
-  if (event.target == assistantModal) {
-    closeAssistant();
-  }
-  if (event.target == executionModal) {
-    executionModal.style.display = "none";
-  }
-};
