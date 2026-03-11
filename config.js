@@ -1,3 +1,0 @@
-const APP_CONFIG = {
-  API_KEY: "AIzaSyCq5QBTE819Av0Gtc7IrQytKmDACvbZMrI",
-};
