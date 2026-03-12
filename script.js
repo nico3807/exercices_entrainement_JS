@@ -1,4 +1,4 @@
-// --- 1. INITIALISATION ---
+// --- 1. INITIALISATION ----
 
 const editorElement = document.getElementById("editor");
 const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
