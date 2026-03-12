@@ -1,0 +1,273 @@
+// --- 1. INITIALISATION ---
+
+const editorElement = document.getElementById("editor");
+const codeMirrorInstance = CodeMirror.fromTextArea(editorElement, {
+  lineNumbers: true,
+  mode: "javascript",
+  theme: "dracula",
+  lineWrapping: true,
+});
+
+// Clé API et Configuration
+const API_KEY = "AIzaSyCwlGNH4z-pqb0b3GbP4dyACEu5dDiMJ_o";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
+
+// Éléments du DOM
+const exerciseContainer = document.getElementById("exerciseContainer");
+const newExerciseButton = document.getElementById("newExerciseButton");
+const assistantModal = document.getElementById("assistantModal");
+const assistantContent = document.getElementById("assistantContent");
+const closeModalButton = document.getElementById("closeModalButton");
+const assistantButton = document.getElementById("assistantButton");
+// ⭐️ NOUVEAU : Éléments de la modale d'exécution
+const executionModal = document.getElementById("executionModal");
+const closeExecutionButton = document.getElementById("closeExecutionButton");
+
+// Variable pour stocker l'exercice (texte complet pour l'assistant)
+let currentExerciseText = "Aucun exercice généré pour le moment.";
+
+// --- 2. EXÉCUTION DU CODE (RunCode) ---
+
+// --- 2. EXÉCUTION DU CODE (RunCode) ---
+
+function runCode() {
+  // ⭐️ NOUVEAU : On ouvre la pop-up dès qu'on lance le test
+  if (executionModal) executionModal.style.display = "block";
+  const rawCode = codeMirrorInstance.getValue();
+
+  // 🛡️ SÉCURITÉ : Échappement des caractères spéciaux
+  // L'ordre est CRUCIAL : on échappe d'abord les antislashs (\)
+  // Sinon, on échapperait les antislashs ajoutés pour les autres caractères !
+  let code = rawCode.replace(/\\/g, "\\\\");
+  code = code.replace(/`/g, "\\`");
+  code = code.replace(/\${/g, "\\${");
+
+  const outputFrame = document.getElementById("outputFrame");
+  const iframeDoc =
+    outputFrame.contentDocument || outputFrame.contentWindow.document;
+
+  iframeDoc.open();
+  iframeDoc.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body { font-family: monospace; margin: 0; padding: 10px; background-color: #dedede; }
+            pre { font-size: 16px; margin: 0; white-space: pre-wrap; word-wrap: break-word; }
+        </style>
+    </head>
+    <body><div id="script-target"></div></body>
+    </html>
+  `);
+  iframeDoc.close();
+
+  setTimeout(() => {
+    const scriptElement = iframeDoc.createElement("script");
+    // On insère le code sécurisé dans le gabarit
+    const scriptContent = `
+        var originalLog = console.log;
+        console.log = function(...args) {
+            const message = args.map(arg => {
+                return (typeof arg === 'object' && arg !== null) ? JSON.stringify(arg, null, 2) : String(arg);
+            }).join(' ');
+            const p = document.createElement('pre');
+            p.textContent = message;
+            document.body.appendChild(p);
+        };
+        try {
+            ${code}
+        } catch (e) {
+            const p = document.createElement('pre');
+            p.style.color = 'red';
+            p.textContent = 'Erreur: ' + e.message;
+            document.body.appendChild(p);
+        }
+    `;
+    scriptElement.textContent = scriptContent;
+    const target = iframeDoc.getElementById("script-target");
+    if (target) target.appendChild(scriptElement);
+  }, 50);
+}
+
+// --- 3. GÉNÉRATION D'EXERCICE ---
+
+async function generateExercise() {
+  if (newExerciseButton) newExerciseButton.disabled = true;
+  exerciseContainer.innerHTML =
+    '<p style="color: #e15c37ff;">Chargement de l\'exercice... 🤖</p>';
+  const systemPrompt = `
+    Tu es un professeur expert en pédagogie pour le BUT MMI (Métiers du Multimédia et de l'Internet). 
+    Tu dois créer un exercice court de JavaScript (niveau débutant/S1) pour un étudiant.
+Contexte de l'exercice : L'exercice doit cibler une notion fondamentale (variables, boucles, tests conditionnels, tests logiques, listes, tableaux ou manipulation simple du DOM) mais appliquée à l'écosystème du jeu vidéo au sens large, en lien avec les compétences MMI :
+1. Interface (UI/UX) : Barre de vie, gestion de menu, inventaire.
+2. Narration : Système de dialogue, choix textuels.
+3. Data : Calcul de score, fiche de personnage (objet JS).
+4. Gameplay : Logique simple de déplacement ou collision.
+Contraintes de rédaction :
+Adresse-toi directement à l'étudiant (tu).
+Pas d'introduction ni de conclusion, va droit au but.
+Utilise un ton encourageant mais technique.
+L'énoncé ne doit pas dépasser 400 mots.
+Le script doit être testable dans un éditeur type CodeMirror (console.log ou alert acceptés).
+Structure obligatoire de la réponse :
+🎯 Consignes
+[Insérer ici l'énoncé clair avec des points précis à réaliser étape par étape]
+Code à Compléter
+[Insérer ici un bloc de code JavaScript avec des commentaires // À faire là où l'étudiant doit écrire son code. 
+Le code doit être fonctionnel une fois complété.]"
+    Formatte la réponse en Markdown.`;
+
+  const userQuery =
+    "Génère un nouvel exercice JavaScript pour un étudiant débutant.";
+
+  try {
+    const result = await callGemini(systemPrompt, userQuery);
+    const text = result || "Erreur de génération.";
+
+    // Sauvegarde du texte complet pour l'assistant (il a besoin du contexte complet)
+    currentExerciseText = text;
+
+    // --- ⭐️ LOGIQUE DE SÉPARATION (Consignes VS Code) ---
+
+    // On cherche le marqueur "Code à Compléter" (avec ou sans balises markdown autour)
+    // Le regex cherche "Code à Compléter" en étant flexible sur la casse et les symboles (#, *)
+    const separatorRegex =
+      /#{1,6}\s*Code à Compléter|\*\*Code à Compléter\*\*|Code à Compléter/i;
+    const splitMatch = text.match(separatorRegex);
+
+    let instructionsPart = text;
+    let codePart = "// Écris ton code ici pour résoudre l'exercice !";
+
+    if (splitMatch) {
+      const splitIndex = splitMatch.index;
+
+      // 1. Partie Instructions : Tout ce qui est AVANT le séparateur
+      instructionsPart = text.substring(0, splitIndex).trim();
+
+      // 2. Partie Code : Tout ce qui est APRÈS le séparateur (+ la longueur du séparateur)
+      let rawCodePart = text
+        .substring(splitIndex + splitMatch[0].length)
+        .trim();
+
+      // Nettoyage du code : On enlève les balises Markdown (```javascript ... ```)
+      // On enlève ```javascript ou ```js au début, et ``` à la fin
+      codePart = rawCodePart
+        .replace(/^```(javascript|js)?/i, "")
+        .replace(/```$/, "")
+        .trim();
+    }
+
+    // Mise à jour de l'affichage de l'énoncé (sans le code)
+    const htmlContent = formatMarkdown(instructionsPart);
+    exerciseContainer.innerHTML = `<div class="markdown-content">${htmlContent}</div>`;
+    // Mise à jour de l'éditeur avec le code extrait
+    codeMirrorInstance.setValue(codePart);
+  } catch (error) {
+    console.error(error);
+    exerciseContainer.innerHTML = `<p style="color: red;">Erreur lors de la génération. Réessayez...</p>`;
+  } finally {
+    if (newExerciseButton) newExerciseButton.disabled = false;
+  }
+}
+
+// --- 4. ASSISTANT PÉDAGOGIQUE (Pop-up) ---
+
+async function askAssistant() {
+  assistantModal.style.display = "block";
+  assistantContent.innerHTML =
+    '<p style="color: #bd93f9; text-align: center; margin-top: 50px;">Analyse de ton code en cours... 🧐</p>';
+
+  const studentCode = codeMirrorInstance.getValue();
+  // Pour l'assistant, on garde le texte complet (currentExerciseText) s'il existe
+  const exerciseText =
+    currentExerciseText.length > 20
+      ? currentExerciseText
+      : exerciseContainer.innerText;
+
+  const systemPrompt = `
+Tu es un expert en développement javascript.
+Tu dois aider un étudiant de première année en BUT MMI.
+Tu ne dois jamais donner la correction de l'exercice, juste des indices.
+Tu dois t'exprimer en français.
+Si le code est correct, félicite-le. Sinon, aide-le à trouver l'erreur.
+`;
+
+  const userQuery = `
+Voici l'exercice complet proposé à l'étudiant : 
+${exerciseText}
+
+Voici le programme proposé par l'étudiant : 
+${studentCode}
+`;
+
+  try {
+    const result = await callGemini(systemPrompt, userQuery);
+    assistantContent.innerHTML = formatMarkdown(result);
+  } catch (error) {
+    assistantContent.innerHTML = `<p style="color: #ff5555;">Erreur d'analyse (${error.message})</p>`;
+  }
+}
+
+function closeAssistant() {
+  assistantModal.style.display = "none";
+}
+
+// --- 5. UTILITAIRES ---
+
+async function callGemini(systemPrompt, userPrompt) {
+  const payload = {
+    contents: [{ parts: [{ text: userPrompt }] }],
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+  };
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
+  const result = await response.json();
+  return result.candidates?.[0]?.content?.parts?.[0]?.text;
+}
+
+function formatMarkdown(text) {
+  if (!text) return "";
+  let html = text;
+  html = html.replace(/^###\s*(.*$)/gim, "<h4>$1</h4>");
+  html = html.replace(/^##\s*(.*$)/gim, "<h3>$1</h3>");
+  html = html.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>");
+  html = html.replace(/\*(.*?)\*/gim, "<em>$1</em>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
+// --- 6. ÉVÉNEMENTS ---
+
+const runBtn = document.getElementById("runButton");
+if (runBtn) runBtn.addEventListener("click", runCode);
+
+if (newExerciseButton)
+  newExerciseButton.addEventListener("click", generateExercise);
+
+if (assistantButton) assistantButton.addEventListener("click", askAssistant);
+if (closeModalButton)
+  closeModalButton.addEventListener("click", closeAssistant);
+
+// Gestion du bouton fermer de la modale d'exécution
+if (closeExecutionButton) {
+  closeExecutionButton.addEventListener("click", () => {
+    executionModal.style.display = "none";
+  });
+}
+
+// Gestion globale des clics en dehors des fenêtres
+// ⭐️ CORRECTION : Une seule fonction window.onclick propre
+window.onclick = function (event) {
+  if (event.target == assistantModal) {
+    closeAssistant();
+  }
+  if (event.target == executionModal) {
+    executionModal.style.display = "none";
+  }
+};
