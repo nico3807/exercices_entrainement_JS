@@ -1,122 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Exercices de JS avec assistance</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/dracula.min.css"
-    />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <!-- LIGNE 1 : ÉDITEUR (50%) | ÉNONCÉ (50%) -->
-
-    <div class="container top-row">
-      <!-- Zone Éditeur -->
-      <div class="code-area editor">
-        <h3>Éditeur de code JavaScript :</h3>
-        <textarea id="editor">// Ajoutez votre code JS ici</textarea>
-        <div class="buttons-row">
-          <button id="runButton">▶ Tester le code</button>
-        </div>
-      </div>
-
-      <!-- Zone Énoncé -->
-      <div class="code-area statement">
-        <div class="exercises-top-bar">
-          <h3>Énoncé de l'exercice :</h3>
-          <div class="header-buttons">
-            <button id="newExerciseButton">Nouvel Exercice</button>
-            <button id="assistantButton">Assistant</button>
-          </div>
-        </div>
-        <div id="exerciseContainer">
-          Cliquez sur "<bold>Nouvel Exercice</bold>" pour commencer.
-        </div>
-      </div>
-    </div>
-
-    <!-- LIGNE 2 : CONSOLE (100% de la largeur) -->
-    <!-- ⭐️ NOUVEAU : Structure de la Pop-up (Modale) -->
-    <div id="assistantModal" class="modal">
-      <div class="modal-content">
-        <h3>Assistant Pédagogique 🎓</h3>
-        <div id="assistantContent">
-          <!-- La réponse de Gemini s'affichera ici -->
-          <p>
-            Je suis là pour t'aider. Clique sur le bouton pour analyser ton
-            code...
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button id="closeModalButton">Fermer</button>
-        </div>
-      </div>
-    </div>
-    <div id="executionModal" class="modal">
-      <div class="modal-content">
-        <h3>Résultat de l'exécution 🚀</h3>
-
-        <div
-          id="executionContent"
-          style="
-            flex: 1;
-            position: relative;
-            background: #dedede;
-            overflow: hidden;
-          "
-        >
-          <iframe
-            id="outputFrame"
-            style="width: 100%; height: 100%; border: none; display: block"
-          ></iframe>
-        </div>
-
-        <div class="modal-footer">
-          <button id="closeExecutionButton">Fermer</button>
-        </div>
-      </div>
-    </div>
-    <div id="topicModal" class="modal">
-      <div class="modal-content" style="max-width: 500px; text-align: center">
-        <h3>Choisis ton défi ⚔️</h3>
-        <div class="topic-buttons-container">
-          <button onclick="loadPromptAndRun('variables.txt')" class="topic-btn">
-            Travail sur les variables
-          </button>
-          <button onclick="loadPromptAndRun('if.txt')" class="topic-btn">
-            Boucles If / Else
-          </button>
-          <button onclick="loadPromptAndRun('for.txt')" class="topic-btn">
-            Boucles For
-          </button>
-          <button onclick="loadPromptAndRun('while.txt')" class="topic-btn">
-            Boucle While
-          </button>
-          <button onclick="loadPromptAndRun('tableaux.txt')" class="topic-btn">
-            Tableaux
-          </button>
-        </div>
-        <div class="modal-footer">
-          <button id="closeTopicButton">Annuler</button>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <p>
-        © 2025 - BUT MMI Béziers - MAURIN N.<br />
-        R1.12 Développement Web
-      </p>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/javascript/javascript.min.js"></script>
-    <script src="./config.js"></script>
-    <script src="./script.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=https://web-mmi2.iutbeziers.fr/~nicolas.maurin1/CCJS/">
+  <title>Redirection...</title>
+</head>
+<body>
+  <p>Redirection en cours... 
+    <a href="https://web-mmi2.iutbeziers.fr/~nicolas.maurin1/CCJS/">
+      Cliquez ici si vous n'êtes pas redirigé automatiquement.
+    </a>
+  </p>
+</body>
 </html>
